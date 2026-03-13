@@ -17,6 +17,12 @@ const expectedPaths = [
   "plugins/safe-echo/README.md",
   "plugins/safe-echo/skills/safe-echo-guide/SKILL.md",
   "plugins/safe-echo/skills/safe-echo-guide/README.md",
+  "plugins/x-reader/package.json",
+  "plugins/x-reader/openclaw.plugin.json",
+  "plugins/x-reader/src/index.ts",
+  "plugins/x-reader/README.md",
+  "plugins/x-reader/skills/x-post-reader/SKILL.md",
+  "plugins/x-reader/skills/x-post-reader/README.md",
   "dev/scripts/check-structure.ts",
   "dev/scripts/check-docs.ts"
 ];

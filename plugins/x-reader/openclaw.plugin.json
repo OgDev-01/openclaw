@@ -1,0 +1,15 @@
+{
+  "id": "x-reader",
+  "name": "X Reader",
+  "description": "Read public X or Twitter post URLs through a normalized, read-only tool.",
+  "version": "0.1.0",
+  "skills": [
+    "skills/x-post-reader"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
+

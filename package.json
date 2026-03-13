@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "bun run build:plugins && bun run check:structure && bun run check:docs",
-    "build:plugins": "bun x tsc -p plugins/safe-echo/tsconfig.json",
+    "build:plugins": "bun x tsc -p plugins/safe-echo/tsconfig.json && bun x tsc -p plugins/x-reader/tsconfig.json",
     "test": "bun test",
     "lint": "bun run check:docs && bun run check:structure",
     "check:structure": "bun run dev/scripts/check-structure.ts",
@@ -18,4 +18,3 @@
     "typescript": "^5.9.2"
   }
 }
-

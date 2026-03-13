@@ -36,6 +36,29 @@ const docRequirements: Array<{ path: string; sections: string[] }> = [
       "## Safety notes",
       "## Verification command"
     ]
+  },
+  {
+    path: "plugins/x-reader/README.md",
+    sections: [
+      "## Purpose",
+      "## Accepted URL formats",
+      "## Upstream dependency note",
+      "## Privacy and safety note",
+      "## OpenClaw enable example",
+      "## Local test command"
+    ]
+  },
+  {
+    path: "plugins/x-reader/skills/x-post-reader/README.md",
+    sections: [
+      "## What it does",
+      "## When to use it",
+      "## Required tools/config",
+      "## Local install",
+      "## Safety notes",
+      "## Limitations",
+      "## Verification command"
+    ]
   }
 ];
 

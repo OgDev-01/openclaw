@@ -11,6 +11,8 @@ describe("local distribution model", () => {
     expect(catalog).toContain("# Capability Catalog");
     expect(catalog).toContain("skills/repo-orientation");
     expect(catalog).toContain("plugins/safe-echo");
+    expect(catalog).toContain("plugins/x-reader");
+    expect(catalog).toContain("x_post_read");
     expect(catalog).toContain("repo-local");
   });
 
