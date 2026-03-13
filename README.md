@@ -4,7 +4,7 @@ This repository is a safety-first workspace for building OpenClaw-compatible ski
 
 It is organized around two installable units:
 
-- `skills/`: standalone skill folders intended to be easy to review and publish to ClawHub
+- `skills/`: standalone skill folders intended to be easy to review and install from this repo
 - `plugins/`: executable OpenClaw plugins that can register tools and optionally bundle companion skills
 
 ## Why this repo exists
@@ -23,11 +23,17 @@ The goal is to make every capability independently inspectable before installati
 - `skills/repo-orientation`: standalone skill that helps an agent explain a repository's top-level structure
 - `plugins/safe-echo`: example plugin with one optional tool and one companion skill
 
+For a machine-readable human-facing index, start with `docs/capabilities.md`.
+
 ## Install model
 
-Standalone skills are the unit intended for ClawHub publishing.
+This repo is `repo-local` first.
 
-Plugins are distributed separately and can bundle companion skills through `openclaw.plugin.json`.
+- OpenClaw agents should inspect this repository directly and use the colocated docs to decide what to install or enable.
+- Standalone skills live under `skills/` and can be copied into an OpenClaw skills directory.
+- Plugins live under `plugins/` and can bundle companion skills through `openclaw.plugin.json`.
+
+ClawHub is deferred for now. If you decide to publish later, the local folder structure is already compatible with that future path.
 
 ## Local workflow
 
@@ -44,6 +50,5 @@ Each installable unit has its own `README.md` with:
 - purpose
 - usage guidance
 - safety notes
-- install or enable steps
-- publish or verification commands where relevant
-
+- repo-local install or enable steps
+- verification commands

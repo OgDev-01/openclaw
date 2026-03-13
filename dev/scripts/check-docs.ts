@@ -12,7 +12,7 @@ const docRequirements: Array<{ path: string; sections: string[] }> = [
       "## Required tools/config",
       "## Local install",
       "## Safety notes",
-      "## Publish command"
+      "## Verification command"
     ]
   },
   {
@@ -34,7 +34,7 @@ const docRequirements: Array<{ path: string; sections: string[] }> = [
       "## Required tools/config",
       "## Local install",
       "## Safety notes",
-      "## Publish command"
+      "## Verification command"
     ]
   }
 ];
@@ -50,4 +50,3 @@ for (const requirement of docRequirements) {
 }
 
 console.log("Docs check passed.");
-

@@ -6,12 +6,14 @@
 - Separate prompt-only skills from executable tools.
 - Minimize hidden coupling between installable units.
 - Use Bun for workspace management while keeping plugin runtime output portable.
+- Optimize for repo-local discovery first and public publishing later, if ever.
 
 ## Top-level model
 
 ### `skills/`
 
 Standalone skill folders are the primary distribution unit for ClawHub.
+In this repository they are treated as repo-local install units first.
 
 Each folder contains:
 
@@ -43,10 +45,10 @@ Each plugin folder contains:
 - `bun run check:structure` validates file presence and manifest basics.
 - `bun run check:docs` validates required documentation sections.
 - `bun run build` compiles the example plugin and reruns repo validation scripts.
+- `docs/capabilities.md` is the catalog OpenClaw agents should inspect for repo-local capability discovery.
 
 ## Safety boundaries
 
 - Installable capabilities do not share runtime code.
 - Dev-only validation scripts may share helpers later if needed.
 - Plugin tools are documented locally and should default to opt-in when they have side effects or external requirements.
-

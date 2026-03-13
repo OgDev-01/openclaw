@@ -23,6 +23,8 @@ This skill is bundled through `plugins/safe-echo/openclaw.plugin.json` and is no
 - The skill is only for non-sensitive demonstration text.
 - It should not be used to pass secrets or hidden tokens through a tool call.
 
-## Publish command
+## Verification command
 
-This companion skill ships with the plugin and is not published independently by default.
+```sh
+bun test
+```

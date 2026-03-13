@@ -16,6 +16,8 @@ These notes summarize the OpenClaw docs that shaped this workspace.
 - Publishing is versioned with semver and tags such as `latest`.
 - Local changes are compared against registry content before overwrite operations.
 
+For this repository, ClawHub is background context only. The active distribution model is repo-local installation and inspection.
+
 ## Plugins
 
 - OpenClaw plugins require an `openclaw.plugin.json` manifest at the plugin root.
@@ -35,4 +37,4 @@ These notes summarize the OpenClaw docs that shaped this workspace.
 - Skills and plugins should be separate top-level units.
 - Every capability should have colocated docs so agents can inspect one folder at a time.
 - Companion skills belong inside a plugin until there is a good reason to publish them independently.
-
+- A repo-local catalog is useful so agents can discover capabilities without relying on a public registry.

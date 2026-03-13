@@ -22,9 +22,8 @@ Copy this folder into an OpenClaw skills directory such as `~/.openclaw/workspac
 - The skill instructs the agent to summarize only what is actually present in the repo.
 - It avoids shelling out with user-provided input.
 
-## Publish command
+## Verification command
 
 ```sh
-clawhub publish ./skills/repo-orientation --slug repo-orientation --name "Repo Orientation" --version 0.1.0 --tags latest
+bun test
 ```
-
