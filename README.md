@@ -22,6 +22,7 @@ The goal is to make every capability independently inspectable before installati
 
 - `skills/repo-orientation`: standalone skill that helps an agent explain a repository's top-level structure
 - `plugins/safe-echo`: example plugin with one optional tool and one companion skill
+- `plugins/x-reader`: public X/Twitter post reader plugin with one bundled skill
 
 For a machine-readable human-facing index, start with `docs/capabilities.md`.
 

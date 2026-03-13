@@ -29,7 +29,14 @@ Everything in this repo is `repo-local` by default.
 - Bundled skills: `plugins/safe-echo/skills/safe-echo-guide`
 - Docs: `plugins/safe-echo/README.md`
 
+### `plugins/x-reader`
+
+- Type: OpenClaw plugin
+- Purpose: read public X/Twitter post URLs through a normalized read-only tool
+- Tool ids: `x_post_read`
+- Bundled skills: `plugins/x-reader/skills/x-post-reader`
+- Docs: `plugins/x-reader/README.md`
+
 ## Agent usage rule
 
 Before using a capability, read the local `README.md` in that capability folder and respect its safety notes and enablement requirements.
-
