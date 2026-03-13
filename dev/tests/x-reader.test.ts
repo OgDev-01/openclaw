@@ -60,6 +60,10 @@ describe("x-reader plugin", () => {
     );
   });
 
+  test("treats malformed url strings as parse errors", () => {
+    expect(() => parseXPostUrl("not a url")).toThrow("PARSE_ERROR");
+  });
+
   test("maps successful fxtwitter responses into normalized output", () => {
     const result = mapFxTwitterResponse(
       {
@@ -253,6 +257,78 @@ describe("x-reader plugin", () => {
     });
   });
 
+  test("allows empty-text media posts when the rest of the payload is valid", () => {
+    const result = mapFxTwitterResponse(
+      {
+        code: 200,
+        message: "OK",
+        tweet: {
+          id: "30",
+          url: "https://twitter.com/jack/status/30",
+          text: "",
+          created_at: "2006-03-21T20:50:14.000Z",
+          lang: "en",
+          author: {
+            name: "jack",
+            screen_name: "jack"
+          },
+          replies: 0,
+          retweets: 0,
+          likes: 0,
+          views: 0,
+          replying_to: null,
+          replying_to_status: null,
+          media: {
+            photos: [
+              {
+                type: "photo",
+                url: "https://pbs.twimg.com/media/only-media.jpg",
+                width: 100,
+                height: 100
+              }
+            ]
+          }
+        }
+      },
+      "https://x.com/jack/status/30"
+    );
+
+    expect(result).toEqual({
+      source: "fxtwitter",
+      canonicalUrl: "https://x.com/jack/status/30",
+      status: "ok",
+      post: {
+        id: "30",
+        url: "https://x.com/jack/status/30",
+        text: "",
+        createdAt: "2006-03-21T20:50:14.000Z",
+        lang: "en",
+        author: {
+          name: "jack",
+          screenName: "jack"
+        },
+        counts: {
+          likes: 0,
+          retweets: 0,
+          replies: 0,
+          views: 0
+        },
+        replyingToScreenName: null,
+        replyingToStatusId: null,
+        media: [
+          {
+            type: "photo",
+            url: "https://pbs.twimg.com/media/only-media.jpg",
+            width: 100,
+            height: 100,
+            altText: null
+          }
+        ],
+        quote: null
+      }
+    });
+  });
+
   test("registers one optional read-only tool and fetches normalized json", async () => {
     const tools: ToolDefinition[] = [];
     const agent: AgentLike = {
@@ -362,6 +438,43 @@ describe("x-reader plugin", () => {
         error: {
           code: "UPSTREAM_ERROR",
           message: "network down"
+        }
+      });
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
+  test("returns parse errors for non-json upstream responses", async () => {
+    const tools: ToolDefinition[] = [];
+    const agent: AgentLike = {
+      addTool(tool) {
+        tools.push(tool);
+      }
+    };
+
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () =>
+      new Response("<html>rate limited</html>", {
+        status: 429,
+        headers: {
+          "content-type": "text/html"
+        }
+      });
+
+    try {
+      xReaderPlugin.register(agent);
+      const result = await tools[0]!.execute("test", {
+        url: "https://x.com/jack/status/20"
+      });
+
+      expect(JSON.parse(result.content[0]!.text)).toEqual({
+        source: "fxtwitter",
+        canonicalUrl: "https://x.com/jack/status/20",
+        status: "error",
+        error: {
+          code: "PARSE_ERROR",
+          message: "FxTwitter returned a non-JSON response"
         }
       });
     } finally {

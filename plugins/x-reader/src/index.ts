@@ -177,12 +177,16 @@ function unsupportedUrl(url: string): never {
   throw new Error(`UNSUPPORTED_URL:${url}`);
 }
 
+function parseError(message: string): never {
+  throw new Error(`PARSE_ERROR:${message}`);
+}
+
 export function parseXPostUrl(url: string): ParsedXUrl {
   let parsed: URL;
   try {
     parsed = new URL(url);
   } catch {
-    unsupportedUrl(url);
+    parseError(url);
   }
 
   if (!X_HOSTS.has(parsed.hostname)) {
@@ -278,7 +282,7 @@ function normalizePost(tweet: FxTwitterTweet): NormalizedPost | null {
   const authorName = author ? asString(author.name) : null;
   const authorScreenName = author ? asString(author.screen_name) : null;
 
-  if (!id || !text || !createdAt || !authorName || !authorScreenName) {
+  if (!id || text === null || !createdAt || !authorName || !authorScreenName) {
     return null;
   }
 
@@ -403,7 +407,16 @@ async function fetchFxTwitter(apiUrl: string): Promise<FxTwitterResponse> {
       }
     });
 
-    return (await response.json()) as FxTwitterResponse;
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType && !contentType.toLowerCase().includes("application/json")) {
+      throw new Error("PARSE_ERROR:FxTwitter returned a non-JSON response");
+    }
+
+    try {
+      return (await response.json()) as FxTwitterResponse;
+    } catch {
+      throw new Error("PARSE_ERROR:FxTwitter returned invalid JSON");
+    }
   } finally {
     clearTimeout(timeout);
   }
@@ -438,17 +451,21 @@ const xReaderPlugin: PluginLike = {
         try {
           parsed = parseXPostUrl(params.url);
         } catch (error) {
+          const code =
+            error instanceof Error && error.message.startsWith("PARSE_ERROR")
+              ? "PARSE_ERROR"
+              : "UNSUPPORTED_URL";
           const message =
-            error instanceof Error && error.message.startsWith("UNSUPPORTED_URL")
-              ? "Unsupported X/Twitter post URL"
-              : "Failed to parse X/Twitter post URL";
+            code === "PARSE_ERROR"
+              ? "Failed to parse X/Twitter post URL"
+              : "Unsupported X/Twitter post URL";
 
           return {
             content: [
               {
                 type: "text",
                 text: JSON.stringify(
-                  createErrorResult(params.url, "UNSUPPORTED_URL", message)
+                  createErrorResult(params.url, code, message)
                 )
               }
             ]
@@ -468,15 +485,22 @@ const xReaderPlugin: PluginLike = {
             ]
           };
         } catch (error) {
-          const message =
+          const rawMessage =
             error instanceof Error ? error.message : "Failed to reach FxTwitter";
+          const code = rawMessage.startsWith("PARSE_ERROR:")
+            ? "PARSE_ERROR"
+            : "UPSTREAM_ERROR";
+          const message =
+            code === "PARSE_ERROR"
+              ? rawMessage.replace("PARSE_ERROR:", "")
+              : rawMessage;
 
           return {
             content: [
               {
                 type: "text",
                 text: JSON.stringify(
-                  createErrorResult(parsed.canonicalUrl, "UPSTREAM_ERROR", message)
+                  createErrorResult(parsed.canonicalUrl, code, message)
                 )
               }
             ]
