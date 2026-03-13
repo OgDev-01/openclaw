@@ -1,0 +1,15 @@
+{
+  "id": "safe-echo",
+  "name": "Safe Echo",
+  "description": "Example OpenClaw plugin that registers one minimal optional tool and bundles one companion skill.",
+  "version": "0.1.0",
+  "skills": [
+    "skills/safe-echo-guide"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
+

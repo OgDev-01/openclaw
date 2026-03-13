@@ -1,0 +1,21 @@
+{
+  "name": "openclaw-foundation",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "bun@1.2.10",
+  "workspaces": [
+    "plugins/*"
+  ],
+  "scripts": {
+    "build": "bun run build:plugins && bun run check:structure && bun run check:docs",
+    "build:plugins": "bun x tsc -p plugins/safe-echo/tsconfig.json",
+    "test": "bun test",
+    "lint": "bun run check:docs && bun run check:structure",
+    "check:structure": "bun run dev/scripts/check-structure.ts",
+    "check:docs": "bun run dev/scripts/check-docs.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
+
